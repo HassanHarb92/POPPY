@@ -2,15 +2,38 @@ import subprocess
 import os
 import glob
 
+#def convert_log_to_xyz(log_file_path, xyz_file_path):
+#    """
+#    Uses Open Babel to convert a Gaussian log file to XYZ format.
+#    """
+#    # Construct the Open Babel command
+#    command = ["obabel", log_file_path, "-O", xyz_file_path]
+#    
+#    # Execute the command
+#    subprocess.run(command, check=True)
+
 def convert_log_to_xyz(log_file_path, xyz_file_path):
     """
-    Uses Open Babel to convert a Gaussian log file to XYZ format.
+    Uses Open Babel to convert a log file to XYZ format.
+    Differentiates between Gaussian and ORCA output files based on their content.
     """
-    # Construct the Open Babel command
-    command = ["obabel", log_file_path, "-O", xyz_file_path]
+    # Read the content of the log file
+    with open(log_file_path, 'r') as file:
+        content = file.read()
     
+    # Check for Gaussian output file
+    if "Gaussian, Inc." in content:
+        command = ["obabel", log_file_path, "-O", xyz_file_path]
+    # Check for ORCA output file
+    elif "Max Planck Institute fuer Kohlenforschung" in content:
+        command = ["obabel", "-i", "orca", log_file_path, "-o", "xyz", "-O", xyz_file_path]
+    else:
+        raise ValueError("Unknown file type. Cannot determine if the file is Gaussian or ORCA output.")
+
     # Execute the command
     subprocess.run(command, check=True)
+
+
 
 # Ensure the xyz_files directory exists
 xyz_dir = 'xyz_files'
@@ -18,16 +41,24 @@ if not os.path.exists(xyz_dir):
     os.makedirs(xyz_dir)
 
 # Loop through all log files in the log_files directory
-for log_file in glob.glob('log_files/*.log'):
-    xyz_file_name = os.path.basename(log_file).replace('.log', '.xyz')
-    xyz_file_path = os.path.join(xyz_dir, xyz_file_name)
+#for log_file in glob.glob('log_files/*'):
+#    xyz_file_name = os.path.basename(log_file).replace('.log', '.xyz')
+#    xyz_file_path = os.path.join(xyz_dir, xyz_file_name)
     
+    # Convert the log file to XYZ format
+#    convert_log_to_xyz(log_file, xyz_file_path)
+
+log_dir = 'log_files'
+for log_file in glob.glob(os.path.join(log_dir, '*')):
+    # Generate the XYZ file name by changing the extension to .xyz
+    file_root, _ = os.path.splitext(os.path.basename(log_file))
+    xyz_file_name = f"{file_root}.xyz"
+    xyz_file_path = os.path.join(xyz_dir, xyz_file_name)
+
     # Convert the log file to XYZ format
     convert_log_to_xyz(log_file, xyz_file_path)
 
 print("XYZ files have been generated in the 'xyz_files' directory.")
-
-
 
 # Ask the user for the title of the project/manuscript
 project_title = input("Enter the title of the project/manuscript: ")

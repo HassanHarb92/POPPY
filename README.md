@@ -1,12 +1,13 @@
 # SI Web App Generator: Create Web Apps for Your Computational SI Data
 
-This guide provides a streamlined process to create and deploy web applications for sharing and visualizing computational Supplementary Information (SI) data, particularly useful for Gaussian output files.
+This guide provides a streamlined process to create and deploy web applications for sharing and visualizing computational Supplementary Information (SI) data, particularly useful for computational chemistry output files (current version supports Gaussian and Orca output files).
 
 ## Dependencies
 
 - `subprocess`
 - `os`
 - `glob`
+- `openbabel`
 - `streamlit`
 
 ## Creating Your Web App
