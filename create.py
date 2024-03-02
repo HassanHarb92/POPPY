@@ -2,15 +2,6 @@ import subprocess
 import os
 import glob
 
-#def convert_log_to_xyz(log_file_path, xyz_file_path):
-#    """
-#    Uses Open Babel to convert a Gaussian log file to XYZ format.
-#    """
-#    # Construct the Open Babel command
-#    command = ["obabel", log_file_path, "-O", xyz_file_path]
-#    
-#    # Execute the command
-#    subprocess.run(command, check=True)
 
 def convert_log_to_xyz(log_file_path, xyz_file_path):
     """
@@ -33,20 +24,10 @@ def convert_log_to_xyz(log_file_path, xyz_file_path):
     # Execute the command
     subprocess.run(command, check=True)
 
-
-
 # Ensure the xyz_files directory exists
 xyz_dir = 'xyz_files'
 if not os.path.exists(xyz_dir):
     os.makedirs(xyz_dir)
-
-# Loop through all log files in the log_files directory
-#for log_file in glob.glob('log_files/*'):
-#    xyz_file_name = os.path.basename(log_file).replace('.log', '.xyz')
-#    xyz_file_path = os.path.join(xyz_dir, xyz_file_name)
-    
-    # Convert the log file to XYZ format
-#    convert_log_to_xyz(log_file, xyz_file_path)
 
 log_dir = 'log_files'
 for log_file in glob.glob(os.path.join(log_dir, '*')):
