@@ -18,6 +18,9 @@ def convert_log_to_xyz(log_file_path, xyz_file_path):
     # Check for ORCA output file
     elif "Max Planck Institute fuer Kohlenforschung" in content:
         command = ["obabel", "-i", "orca", log_file_path, "-o", "xyz", "-O", xyz_file_path]
+
+    elif "POSCAR" or "CONTCAR" in log_file_path:
+        command = ['obabel','-i','vasp',log_file_path,'-o','xyz','-O',xyz_file_path]
     else:
         raise ValueError("Unknown file type. Cannot determine if the file is Gaussian or ORCA output.")
 
