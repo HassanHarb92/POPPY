@@ -16,7 +16,7 @@ def read_xyz_file(xyz_file_path):
 #st.set_page_config(layout="wide")
 
 # Streamlit app starts here
-st.title('hello world')
+st.title('SI generator test')
 st.markdown('## Supplementary Information Visualizer')
 
 # Directory containing the .xyz files

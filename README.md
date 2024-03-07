@@ -45,3 +45,5 @@ The deployment process is identical for both types of web apps and can be summar
 
 By following these steps, you can efficiently create and deploy web applications tailored to the visualization needs of your computational chemistry research, making your supplementary information more accessible and interactive.
 
+*Note*: To create a supercell from a POSCAR file, check extra/ase_poscar_larger.py 
+
