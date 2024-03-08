@@ -1,6 +1,6 @@
 # Web App Generator for Computational Chemistry Data Visualization
 
-This comprehensive guide provides a streamlined process for creating and deploying web applications. These apps are designed to share and visualize computational Supplementary Information (SI) data, including Gaussian and Orca output files, as well as molecular orbital data from cube files. The guide facilitates the visualization of computational chemistry output files and molecular orbitals, enhancing the accessibility and impact of your research findings.
+This guide provides a streamlined process for creating and deploying web applications. These apps are designed to share and visualize and share computational chemistry data, including Gaussian and Orca output files, molecular orbital data from cube files, and molecular datasets via CSV files. The guide facilitates the visualization of computational chemistry output files and molecular orbitals, enhancing the accessibility and impact of your research findings.
 
 ## Dependencies
 
@@ -22,6 +22,11 @@ This comprehensive guide provides a streamlined process for creating and deployi
 1. **Generate Cube Files**: Use your computational chemistry software to generate cube files containing molecular orbital data. To create cube files with Gaussian, check this [Gaussian CubeGen documentation](https://gaussian.com/cubegen/). 
 2. **Organize Cube Files**: Place all cube files into a directory named `cubes`.
 3. **Generate App Scripts**: Execute `create_MO.py`. Similar to `create.py`, it asks for a title, then generates `stream_MO.py`, `packages.txt`, and `requirements.txt`, with `stream_MO.py` serving as the core of your molecular orbital visualization web app.
+
+### For Visualizing Molecular Datasets
+
+1. **Prepare Your CSV File**: Ensure your CSV is formatted correctly: the first column should be named "Name" and contain the molecule names; the second column, "SMILES", should contain the SMILES strings of the molecules; subsequent columns can include any properties of interest related to the molecules.
+2. **Generate App Scripts**: Run `create_db.py`. This script prompts you for a title for the web app and the location of the dataset. Following these inputs, it automatically generates `streamlit_app_db.py`, the primary file for your web app, alongside `requirements.txt` and `packages.txt`, ensuring your app has all it needs to run effectively.
 
 ## Running Your Web App Locally
 
