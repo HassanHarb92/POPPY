@@ -1,5 +1,9 @@
 # Web App Generator for Computational Chemistry Data Visualization
-# POPPY (Python-based Output Processing and Presentation for chemistrY)
+Suggested names:
+
+- POPPY (Python-based Output Processing and Presentation for chemistrY)
+
+  
 
 
 This guide provides a streamlined process for creating and deploying web applications. These apps are designed to share and visualize and share computational chemistry data, including Gaussian and Orca output files, molecular orbital data from cube files, and molecular datasets via CSV files. The guide facilitates the visualization of computational chemistry output files and molecular orbitals, enhancing the accessibility and impact of your research findings.
@@ -53,4 +57,6 @@ The deployment process is identical for both types of web apps and can be summar
 By following these steps, you can efficiently create and deploy web applications tailored to the visualization needs of your computational chemistry research, making your supplementary information more accessible and interactive.
 
 *Note*: To create a supercell from a POSCAR file, check extra/ase_poscar_larger.py 
+
+
 
