@@ -152,8 +152,8 @@ def visualize_molecule(geometry, style='stick'):
 
     # Style options for visualization
     style_options = {
-        'Stick': {'stick': {}},
         'Ball and Stick': {'stick': {}, 'sphere': {'radius': 0.5}},
+        'Stick': {'stick': {}},
         'Spacefill': {'sphere': {}}
     }
     selected_style = st.radio('Select visualization style', list(style_options.keys()))
