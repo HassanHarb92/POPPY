@@ -114,11 +114,17 @@ def plot_energies(energies):
 
 def visualize_molecule(geometry, style='stick'):
     """Visualize the molecule using py3Dmol."""
-    view = py3Dmol.view(width=400, height=300)
-    view.addModel(geometry, 'xyz')
-    view.setStyle({style: {}})
-    view.zoomTo()
-    return view
+    scale = 1
+    width = int(640.0 * scale)
+    height = int(480.0 * scale)
+
+    xyzview = py3Dmol.view(width=width, height=height)
+    xyzview.addModel(geometry, 'xyz')
+    xyzview.setStyle({style: {}})
+    xyzview.zoomTo()
+    
+    # Display the visualization in Streamlit
+    st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
 
 def main():
     st.title('Gaussian IRC Visualization App')
@@ -142,14 +148,14 @@ def main():
 
         step = st.slider('Select Geometry Step', 0, len(cleaned_geometries) - 1, 0)
 
-        # Display selected geometry
+        # 3D Visualization of selected geometry
         selected_geometry = cleaned_geometries[step]
         st.write(f'### Geometry at step {step}')
-        st.text(selected_geometry)
+        st.write(f'#### Debug: Displaying Geometry for Step {step}')
+        st.text(selected_geometry)  # Debugging output
 
-        # 3D Visualization
-        xyzview = visualize_molecule(selected_geometry)
-        st.components.v1.html(xyzview._make_html(), width=400, height=300, scrolling=False)
+        # Visualize using Py3Dmol
+        visualize_molecule(selected_geometry)
 
 if __name__ == "__main__":
     main()
