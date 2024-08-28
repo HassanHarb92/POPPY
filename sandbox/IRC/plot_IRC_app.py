@@ -113,6 +113,8 @@ def plot_energies(energies):
     st.pyplot(fig)
 
 def visualize_molecule(geometry, style='stick'):
+#    print ("geometry debug")
+#    print (geometry)
     """Visualize the molecule using py3Dmol."""
     scale = 1
     width = int(640.0 * scale)
@@ -122,7 +124,8 @@ def visualize_molecule(geometry, style='stick'):
     xyzview.addModel(geometry, 'xyz')
     xyzview.setStyle({style: {}})
     xyzview.zoomTo()
-    
+
+    xyzview.show()
     # Display the visualization in Streamlit
     st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
 
@@ -151,10 +154,6 @@ def main():
         # 3D Visualization of selected geometry
         selected_geometry = cleaned_geometries[step]
         st.write(f'### Geometry at step {step}')
-        st.write(f'#### Debug: Displaying Geometry for Step {step}')
-        st.text(selected_geometry)  # Debugging output
-
-        # Visualize using Py3Dmol
         visualize_molecule(selected_geometry)
 
 if __name__ == "__main__":
