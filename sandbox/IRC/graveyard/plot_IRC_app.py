@@ -2,6 +2,8 @@ import os
 import streamlit as st
 import matplotlib.pyplot as plt
 from rdkit import Chem
+from rdkit.Chem import Draw
+from rdkit.Chem import AllChem
 import py3Dmol
 
 def atomic_number_to_symbol(atomic_number):
@@ -13,35 +15,18 @@ def atomic_number_to_symbol(atomic_number):
 def parse_gaussian_log(file_content):
     lines = file_content.splitlines()
 
-    ts_geometry = None
-    forward_geometries = []
-    reverse_geometries = []
+    geometries = []
     energies = []
-
     temp_geom = []
     capture_geom = False
     skip_lines_after_marker = 4  # Assuming there are 4 lines to skip after the geometry section marker
-    reading_reverse = False
 
     for line in lines:
-        if "Point Number  1 in FORWARD path direction." in line:
-            capture_geom = True
-            reading_reverse = False
-            skipped_lines = 0
-            continue
-        elif "Point Number  1 in REVERSE path direction." in line:
-            capture_geom = True
-            reading_reverse = True
-            skipped_lines = 0
-            continue
-        elif "Input orientation:" in line or "Standard orientation:" in line:
+        if "Input orientation:" in line or "Standard orientation:" in line:
             capture_geom = True
             skipped_lines = 0
-            if temp_geom:
-                if reading_reverse:
-                    reverse_geometries.append("\n".join(temp_geom))
-                else:
-                    forward_geometries.append("\n".join(temp_geom))
+            if temp_geom:  # If there's an existing geometry block, store it before starting a new one
+                geometries.append("\n".join(temp_geom))
                 temp_geom = []
             continue
 
@@ -52,11 +37,8 @@ def parse_gaussian_log(file_content):
                 continue
             elif "---------------------------------------------------------------------" in line:
                 # End of geometry section
-                if temp_geom:
-                    if reading_reverse:
-                        reverse_geometries.append("\n".join(temp_geom))
-                    else:
-                        forward_geometries.append("\n".join(temp_geom))
+                if temp_geom:  # Check to ensure we don't capture empty geometries
+                    geometries.append("\n".join(temp_geom))
                     temp_geom = []
                 capture_geom = False
             else:
@@ -66,25 +48,13 @@ def parse_gaussian_log(file_content):
         if "SCF Done:" in line:
             parts = line.split()
             energy = parts[4]  # Extract the energy value
-            if reading_reverse:
-                energies.insert(0, float(energy))  # Insert energy at the beginning for reverse
-            else:
-                energies.append(float(energy))
+            energies.append(float(energy))
 
     # Check for any remaining geometry data that hasn't been appended
     if temp_geom:
-        if reading_reverse:
-            reverse_geometries.append("\n".join(temp_geom))
-        else:
-            forward_geometries.append("\n".join(temp_geom))
+        geometries.append("\n".join(temp_geom))
 
-    # Reverse the list of reverse geometries to have them in the correct order
-    reverse_geometries.reverse()
-
-    # Combine all geometries: reverse (in reversed order) -> TS -> forward
-    combined_geometries = reverse_geometries + forward_geometries
-
-    return combined_geometries, energies
+    return geometries, energies
 
 def clean_geometries_for_py3dmol(geometries):
     cleaned_geometries = []
