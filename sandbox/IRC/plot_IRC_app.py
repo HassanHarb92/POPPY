@@ -103,14 +103,35 @@ def clean_geometries_for_py3dmol(geometries):
         cleaned_geometries.append("\n".join(cleaned_geometry))
     return cleaned_geometries
 
+
 def plot_energies(energies):
-    """Plot the energy profile of the geometries."""
+    """Plot the energy profile of the geometries with optional normalization and unit conversion."""
+    
+    # Normalize energies if the user selects the option
+#    normalize = st.checkbox('Normalize energies relative to the lowest value')
+    normalize = True   
+    if normalize:
+        # Convert energies to be relative to the lowest value
+        min_energy = min(energies)
+        energies = [energy - min_energy for energy in energies]
+        
+        # Unit conversion options
+        unit = st.radio('Select energy units:', ('Hartree', 'eV', 'Kcal/mol'))
+        
+        if unit == 'eV':
+            energies = [energy * 27.21 for energy in energies]  # Convert Hartree to eV
+        elif unit == 'Kcal/mol':
+            energies = [energy * 627.51 for energy in energies]  # Convert Hartree to Kcal/mol
+
+    # Plotting the energy profile
     fig, ax = plt.subplots()
     ax.plot(range(len(energies)), energies, marker='o', linestyle='-')
     ax.set_xlabel('Step')
-    ax.set_ylabel('Energy (a.u.)')
+    ax.set_ylabel(f'Energy ({unit})')
     ax.set_title('Energy Profile along IRC')
+    
     st.pyplot(fig)
+
 
 def old_visualize_molecule(geometry, style='stick'):
     print ("geometry debug")
@@ -171,7 +192,6 @@ def visualize_molecule(geometry, style='stick'):
     # Display the visualization in Streamlit
     st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
 
-
 def main():
     st.title('Gaussian IRC Visualization App')
 
@@ -201,4 +221,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
