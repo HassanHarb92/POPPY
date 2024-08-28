@@ -2,12 +2,11 @@ import streamlit as st
 import re
 import matplotlib.pyplot as plt
 
-def parse_log_file(file):
+def parse_log_file(file_content):
     """
     Parse the Gaussian .log file to extract geometries and energies.
     """
-    with open(file, 'r') as f:
-        lines = f.readlines()
+    lines = file_content.splitlines()
     
     geometries = []
     energies = []
@@ -42,7 +41,9 @@ def main():
     uploaded_file = st.file_uploader("Upload a Gaussian IRC .log file", type="log")
 
     if uploaded_file is not None:
-        geometries, energies = parse_log_file(uploaded_file)
+        # Read the file content as string
+        file_content = uploaded_file.read().decode('utf-8')
+        geometries, energies = parse_log_file(file_content)
         num_geometries = len(geometries)
 
         if num_geometries % 2 == 0:
