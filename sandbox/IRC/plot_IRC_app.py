@@ -112,7 +112,7 @@ def plot_energies(energies):
     ax.set_title('Energy Profile along IRC')
     st.pyplot(fig)
 
-def visualize_molecule(geometry, style='stick'):
+def old_visualize_molecule(geometry, style='stick'):
     print ("geometry debug")
     print (geometry)
     style_options = {
@@ -136,6 +136,41 @@ def visualize_molecule(geometry, style='stick'):
     xyzview.show()
     # Display the visualization in Streamlit
     st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
+
+
+def visualize_molecule(geometry, style='stick'):
+    """Visualize the molecule using py3Dmol."""
+    # Calculate number of atoms
+    lines = geometry.splitlines()
+    num_atoms = len(lines)
+
+    # Reformat geometry to standard XYZ format
+    xyz_format = f"{num_atoms}\n\n" + geometry
+
+#    print("geometry debug")
+#    print(xyz_format)  # Debugging output
+
+    # Style options for visualization
+    style_options = {
+        'Stick': {'stick': {}},
+        'Ball and Stick': {'stick': {}, 'sphere': {'radius': 0.5}},
+        'Spacefill': {'sphere': {}}
+    }
+    selected_style = st.radio('Select visualization style', list(style_options.keys()))
+
+    # Visualize the molecule using py3Dmol
+    scale = 1
+    width = int(640.0 * scale)
+    height = int(480.0 * scale)
+
+    xyzview = py3Dmol.view(width=width, height=height)
+    xyzview.addModel(xyz_format, 'xyz')
+    xyzview.setStyle(style_options[selected_style])  # Use the selected style
+    xyzview.zoomTo()
+
+    # Display the visualization in Streamlit
+    st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
+
 
 def main():
     st.title('Gaussian IRC Visualization App')
