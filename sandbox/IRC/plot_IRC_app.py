@@ -113,8 +113,15 @@ def plot_energies(energies):
     st.pyplot(fig)
 
 def visualize_molecule(geometry, style='stick'):
-#    print ("geometry debug")
-#    print (geometry)
+    print ("geometry debug")
+    print (geometry)
+    style_options = {
+        'Stick': {'stick': {}},
+        'Ball and Stick': {'stick': {}, 'sphere': {'radius': 0.5}},
+        'Spacefill': {'sphere': {}}
+    }
+    selected_style = st.radio('Select visualization style', list(style_options.keys()))
+
     """Visualize the molecule using py3Dmol."""
     scale = 1
     width = int(640.0 * scale)
@@ -122,7 +129,8 @@ def visualize_molecule(geometry, style='stick'):
 
     xyzview = py3Dmol.view(width=width, height=height)
     xyzview.addModel(geometry, 'xyz')
-    xyzview.setStyle({style: {}})
+#    xyzview.setStyle({style: {}})
+    xyzview.setStyle(style_options[selected_style])  # Use the selected style
     xyzview.zoomTo()
 
     xyzview.show()
