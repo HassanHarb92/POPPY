@@ -194,6 +194,7 @@ def visualize_molecule(geometry, style='stick'):
 
 def main():
     st.title('Gaussian IRC Visualization App')
+    st.markdown("### Beta version")
 
     uploaded_file = st.file_uploader("Upload a Gaussian IRC .log file", type="log")
 
