@@ -239,12 +239,11 @@ def main():
             st.session_state.play = False
 
         # Play/Pause button
-        if st.button('Play/Pause Animation'):
-            st.session_state.play = not st.session_state.play
+        if st.button('Play Animation'):
+            st.session_state.play = True
 
-        # Reset button
-        if st.button('Reset'):
-            st.session_state.step = 0
+        # Stop button
+        if st.button('Stop Animation'):
             st.session_state.play = False
 
         # Animation loop
