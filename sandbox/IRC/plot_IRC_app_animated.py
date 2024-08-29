@@ -156,8 +156,8 @@ def plot_energies(energies):
     """Plot the energy profile of the geometries with optional normalization and unit conversion."""
     
     # Normalize energies if the user selects the option
-#    normalize = st.checkbox('Normalize energies relative to the lowest value')
-    normalize =  True 
+    normalize = st.checkbox('Normalize energies relative to the lowest value')
+    
     if normalize:
         # Convert energies to be relative to the lowest value
         min_energy = min(energies)
@@ -236,17 +236,25 @@ def main():
 
         if 'step' not in st.session_state:
             st.session_state.step = 0
-        
-        # Add "Play" button for animation
-        if st.button('Play Animation'):
-            for i in range(st.session_state.step, len(aligned_geometries)):
-                st.session_state.step = i
-                st.slider('Select Geometry Step', 0, len(aligned_geometries) - 1, st.session_state.step)
-                selected_geometry = aligned_geometries[st.session_state.step]
-                visualize_molecule(selected_geometry)
-                time.sleep(0.2)  # Adjust speed as needed
-                st.experimental_rerun()
-        
+            st.session_state.play = False
+
+        # Play/Pause button
+        if st.button('Play/Pause Animation'):
+            st.session_state.play = not st.session_state.play
+
+        # Reset button
+        if st.button('Reset'):
+            st.session_state.step = 0
+            st.session_state.play = False
+
+        # Animation loop
+        if st.session_state.play:
+            st.session_state.step += 1
+            if st.session_state.step >= len(aligned_geometries):
+                st.session_state.step = 0  # Loop back to start
+            time.sleep(0.2)
+            st.experimental_rerun()
+
         # Slider for manual selection
         step = st.slider('Select Geometry Step', 0, len(aligned_geometries) - 1, st.session_state.step)
         st.session_state.step = step
