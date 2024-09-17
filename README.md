@@ -57,4 +57,6 @@ By following these steps, you can efficiently create and deploy web applications
 *Note*: To create a supercell from a POSCAR file, check extra/ase_poscar_larger.py 
 
 
+## Work in progress:
 
+- LLM powered xTB calculator: https://github.com/HassanHarb92/xtb_streamlit 
