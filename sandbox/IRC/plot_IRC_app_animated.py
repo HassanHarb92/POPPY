@@ -157,7 +157,7 @@ def plot_energies(energies):
     
     # Normalize energies if the user selects the option
     normalize = st.checkbox('Normalize energies relative to the lowest value')
-    
+    normalize = True
     if normalize:
         # Convert energies to be relative to the lowest value
         min_energy = min(energies)
