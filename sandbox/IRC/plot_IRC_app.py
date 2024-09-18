@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
 from rdkit import Chem
@@ -86,6 +87,53 @@ def parse_gaussian_log(file_content):
 
     return combined_geometries, energies
 
+def compute_centroid(geometry):
+    """Compute the centroid of a geometry."""
+    lines = geometry.splitlines()
+    coordinates = np.array([[float(parts.split()[1]), float(parts.split()[2]), float(parts.split()[3])] for parts in lines])
+    centroid = np.mean(coordinates, axis=0)
+    return centroid
+
+def align_geometries(geometries):
+    """Align all geometries to a common reference frame."""
+    aligned_geometries = []
+
+    for geometry in geometries:
+        lines = geometry.splitlines()
+        # Compute the centroid
+        centroid = compute_centroid(geometry)
+        coordinates = []
+
+        # Translate all atoms to center at the origin
+        for line in lines:
+            parts = line.split()
+            element_symbol = parts[0]
+            x, y, z = float(parts[1]), float(parts[2]), float(parts[3])
+            x -= centroid[0]
+            y -= centroid[1]
+            z -= centroid[2]
+            coordinates.append([element_symbol, x, y, z])
+
+        # Convert coordinates to numpy array for matrix operations
+        coord_array = np.array([[x, y, z] for _, x, y, z in coordinates])
+
+        # Compute the moment of inertia tensor
+        inertia_tensor = np.zeros((3, 3))
+        for _, x, y, z in coordinates:
+            inertia_tensor += np.array([[y**2 + z**2, -x * y, -x * z],
+                                        [-y * x, x**2 + z**2, -y * z],
+                                        [-z * x, -z * y, x**2 + y**2]])
+
+        # Eigen decomposition for principal axes
+        eigenvalues, eigenvectors = np.linalg.eigh(inertia_tensor)
+
+        # Align the molecule to the principal axes
+        aligned_coords = np.dot(coord_array, eigenvectors)
+        aligned_geometry = "\n".join([f"{coordinates[i][0]} {aligned_coords[i][0]:.6f} {aligned_coords[i][1]:.6f} {aligned_coords[i][2]:.6f}" for i in range(len(coordinates))])
+        aligned_geometries.append(aligned_geometry)
+
+    return aligned_geometries
+
 def clean_geometries_for_py3dmol(geometries):
     cleaned_geometries = []
 
@@ -103,13 +151,12 @@ def clean_geometries_for_py3dmol(geometries):
         cleaned_geometries.append("\n".join(cleaned_geometry))
     return cleaned_geometries
 
-
 def plot_energies(energies):
     """Plot the energy profile of the geometries with optional normalization and unit conversion."""
     
     # Normalize energies if the user selects the option
 #    normalize = st.checkbox('Normalize energies relative to the lowest value')
-    normalize = True   
+    normalize = True    
     if normalize:
         # Convert energies to be relative to the lowest value
         min_energy = min(energies)
@@ -132,33 +179,6 @@ def plot_energies(energies):
     
     st.pyplot(fig)
 
-
-def old_visualize_molecule(geometry, style='stick'):
-    print ("geometry debug")
-    print (geometry)
-    style_options = {
-        'Stick': {'stick': {}},
-        'Ball and Stick': {'stick': {}, 'sphere': {'radius': 0.5}},
-        'Spacefill': {'sphere': {}}
-    }
-    selected_style = st.radio('Select visualization style', list(style_options.keys()))
-
-    """Visualize the molecule using py3Dmol."""
-    scale = 1
-    width = int(640.0 * scale)
-    height = int(480.0 * scale)
-
-    xyzview = py3Dmol.view(width=width, height=height)
-    xyzview.addModel(geometry, 'xyz')
-#    xyzview.setStyle({style: {}})
-    xyzview.setStyle(style_options[selected_style])  # Use the selected style
-    xyzview.zoomTo()
-
-    xyzview.show()
-    # Display the visualization in Streamlit
-    st.components.v1.html(xyzview._make_html(), width=width, height=height, scrolling=False)
-
-
 def visualize_molecule(geometry, style='stick'):
     """Visualize the molecule using py3Dmol."""
     # Calculate number of atoms
@@ -167,9 +187,6 @@ def visualize_molecule(geometry, style='stick'):
 
     # Reformat geometry to standard XYZ format
     xyz_format = f"{num_atoms}\n\n" + geometry
-
-#    print("geometry debug")
-#    print(xyz_format)  # Debugging output
 
     # Style options for visualization
     style_options = {
@@ -208,19 +225,21 @@ def main():
 
         cleaned_geometries = clean_geometries_for_py3dmol(geometries)
 
+        # Align all geometries to the same reference frame
+        aligned_geometries = align_geometries(cleaned_geometries)
+
         st.header("Energy Profile")
         plot_energies(energies)
 
         st.header("Geometry Viewer")
 
-        step = st.slider('Select Geometry Step', 0, len(cleaned_geometries) - 1, 0)
+        step = st.slider('Select Geometry Step', 0, len(aligned_geometries) - 1, 0)
 
         # 3D Visualization of selected geometry
-        selected_geometry = cleaned_geometries[step]
+        selected_geometry = aligned_geometries[step]
         st.write(f'### Geometry at step {step}')
         visualize_molecule(selected_geometry)
 
 if __name__ == "__main__":
     main()
-
 
