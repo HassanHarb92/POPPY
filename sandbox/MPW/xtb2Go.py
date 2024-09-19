@@ -126,6 +126,18 @@ def visualize_molecule(xyz_file):
         st.error(f"Error visualizing molecule: {e}")
 
 # Function to query PubChem by SMILES and get properties
+def oldquery_pubchem(smiles):
+    try:
+        compound = pcp.get_compounds(smiles, 'smiles')
+        if not compound:
+            return None  # No compound found
+        return compound[0]  # Return the first compound result
+    except Exception as e:
+        st.error(f"Error querying PubChem: {e}")
+        return None
+
+
+# Function to query PubChem by SMILES and get properties
 def query_pubchem(smiles):
     try:
         compound = pcp.get_compounds(smiles, 'smiles')
@@ -135,6 +147,7 @@ def query_pubchem(smiles):
     except Exception as e:
         st.error(f"Error querying PubChem: {e}")
         return None
+
 
 # Function to create a downloadable results file
 def create_results_file(energies, xyz_file, frequencies=None):
@@ -194,6 +207,7 @@ with col3:
 
 # "Run" button to execute the calculation
 if st.button("Run"):
+        
     if smiles:
         # Query PubChem to get compound properties
         compound = query_pubchem(smiles)
@@ -201,9 +215,21 @@ if st.button("Run"):
             st.write(f"**Compound Name**: {compound.iupac_name}")
             st.write(f"**Molecular Formula**: {compound.molecular_formula}")
             st.write(f"**Molecular Weight**: {compound.molecular_weight}")
+            st.write(f"**Canonical SMILES**: {compound.canonical_smiles}")
+            st.write(f"**InChI**: {compound.inchi}")
+            st.write(f"**InChIKey**: {compound.inchikey}")
+            st.write(f"**XLogP**: {compound.xlogp}")
+            st.write(f"**Exact Mass**: {compound.exact_mass}")
+            st.write(f"**Charge**: {compound.charge}")
+            st.write(f"**Hydrogen Bond Donor Count**: {compound.h_bond_donor_count}")
+            st.write(f"**Hydrogen Bond Acceptor Count**: {compound.h_bond_acceptor_count}")
+            st.write(f"**Rotatable Bond Count**: {compound.rotatable_bond_count}")
+            st.write(f"**Topological Polar Surface Area (TPSA)**: {compound.tpsa}")
+            st.write(f"**Complexity**: {compound.complexity}")
+            st.write(f"**Synonyms**: {', '.join(compound.synonyms[:5])}")  # Limit to the first 5 synonyms
         else:
             st.write("The molecule is not in PubChem.")
-        
+
         # Calculate the number of electrons and determine multiplicity
         num_electrons, multiplicity = calculate_multiplicity(smiles, charge)
         st.write(f"Number of Electrons: {num_electrons}, Multiplicity: {multiplicity}")
