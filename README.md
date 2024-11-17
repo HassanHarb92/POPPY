@@ -2,9 +2,11 @@
 Suggested names:
 
 - POPPY (Python-based Output Processing and Presentation for chemistrY)
-- Updated Apr 8, 2024
+- Updated Nov 16, 2024
 
 This guide provides a streamlined process for creating and deploying web applications. These apps are designed to share and visualize and share computational chemistry data, including Gaussian and Orca output files, molecular orbital data from cube files, and molecular datasets via CSV files. The guide facilitates the visualization of computational chemistry output files and molecular orbitals, enhancing the accessibility and impact of your research findings.
+
+- Short tutorial: https://youtu.be/lTrZjjDPhaY 
 
 ## Dependencies
 
