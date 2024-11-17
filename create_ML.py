@@ -45,7 +45,7 @@ matplotlib
 plotly
 pillow
 streamlit
-rdkit-pypi
+rdkit
 py3Dmol==2.0.0.post2
 ipython_genutils
 stmol
