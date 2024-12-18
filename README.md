@@ -1,5 +1,7 @@
 # POPPY: Code Documentation
 
+Last updated Dec 18, 2024.
+
 ## Introduction
 
 POPPY (Python-based Output Processing and Presentation for chemistrY) is an open-source tool designed to facilitate the creation of interactive web applications for computational chemistry data. Leveraging Python and popular libraries like Streamlit, Open Babel, and Py3Dmol, POPPY enables users to visualize and share molecular structures, datasets, and properties seamlessly across devices using just a web browser. This documentation provides a step-by-step guide to set up, customize, and deploy applications created with POPPY.
