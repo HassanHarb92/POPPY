@@ -2,7 +2,7 @@ streamlit
 openbabel
 py3Dmol==2.0.0.post2
 matplotlib
-rdkit-pypi
+rdkit
 joblib
 numpy
 pandas
