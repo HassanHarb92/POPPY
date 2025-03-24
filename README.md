@@ -26,6 +26,7 @@ POPPY (Python-based Output Processing and Presentation for chemistrY) is an open
   - `ipython_genutils`
   - `stmol`
   - `scikit-learn==1.2.2`
+  - `pubchempy`
 
 Install dependencies by running:
 

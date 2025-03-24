@@ -12,3 +12,4 @@ pillow
 ipython_genutils
 stmol
 scikit-learn==1.2.2
+pubchempy
