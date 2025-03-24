@@ -1,6 +1,6 @@
 # POPPY: Code Documentation
 
-Last updated Dec 18, 2024.
+Last updated March 24, 2025.
 
 ## Introduction
 
@@ -18,6 +18,14 @@ POPPY (Python-based Output Processing and Presentation for chemistrY) is an open
   - `matplotlib`
   - `rdkit`
   - `joblib`
+  - `numpy`
+  - `pandas`
+  - `pyarrow`
+  - `plotly`
+  - `pillow`
+  - `ipython_genutils`
+  - `stmol`
+  - `scikit-learn==1.2.2`
 
 Install dependencies by running:
 
