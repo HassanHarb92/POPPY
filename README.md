@@ -46,6 +46,21 @@ POPPY supports three primary application types:
 2. **Molecular Orbital Visualization**: Displays 3D visualizations of molecular orbitals generated as cube files.
 3. **Dataset Visualization**: Enables interactive exploration of molecular datasets in CSV format.
 
+**Details on the scripts are presented in this table:**
+
+| **Folder Name**      | **Contents**                                          | **Purpose**                                                  |
+| -------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| `molecule_viewer/`   | `create_molecule_viewer.py`, `molecule_viewer_app.py` | Visualize molecular structures                               |
+| `orbital_viewer/`    | `create_orbital_viewer.py`, `orbital_viewer_app.py`   | Visualize molecular orbitals                                 |
+| `dataset_viewer/`    | `create_dataset_viewer.py`, `dataset_viewer_app.py`   | Browse and explore datasets                                  |
+| `ml_training_app/`   | `ml_training_app.py`                                  | Train machine learning models                                |
+| `ml_deployment_app/` | `ml_deployment_app.py`                                | Deploy trained machine learning models                       |
+| `particle_in_box/`   | `particle_in_a_box.py`                                | Solve and visualize particle-in-a-box                        |
+| `irc_visualizer/`    | `IRC_visualizer_app.py`                               | Visualize Intrinsic Reaction Coordinates (from a Gaussian output file) |
+| `xtb_wrapper/`       | `xtb2Go.py`                                           | xTB calculation launcher                                     |
+
+
+
 ## Setup and Usage
 
 ### 1. Computational Chemistry Output Visualization
@@ -61,12 +76,12 @@ POPPY supports three primary application types:
 Run the script to create the app:
 
 ```
-python create.py
+python create_molecule_viewer.py
 ```
 
 You will be prompted to enter the title of your app. Upon execution, the following files are generated:
 
-- `stream_app.py`: Core script for the Streamlit app.
+- `molecule_viewer_app.py`: Core script for the Streamlit app.
 - `packages.txt` and `requirements.txt`: Dependencies for the app.
 
 #### Step 3: Preview Locally
@@ -74,7 +89,7 @@ You will be prompted to enter the title of your app. Upon execution, the followi
 Test the app locally by running:
 
 ```
-streamlit run stream_app.py
+streamlit run molecule_viewer_app.py
 ```
 
 Access the app in your default web browser to ensure proper functionality.
@@ -91,7 +106,7 @@ Access the app in your default web browser to ensure proper functionality.
 Run the script to generate the app:
 
 ```
-python create_MO.py
+python create_orbital_viewer.py
 ```
 
 Similar to the output visualization, this creates the necessary Streamlit scripts for deploying the app.
@@ -101,7 +116,7 @@ Similar to the output visualization, this creates the necessary Streamlit script
 Run the app locally to confirm functionality:
 
 ```
-streamlit run stream_MO.py
+streamlit run orbital_viewer_app.py
 ```
 
 ### 3. Dataset Visualization
@@ -119,7 +134,7 @@ Create a CSV file with the following columns:
 Run the script to create the dataset visualization app:
 
 ```
-python create_db.py
+python create_dataset_viewer.py
 ```
 
 Provide the title of the app and the path to the CSV file when prompted.
@@ -129,10 +144,10 @@ Provide the title of the app and the path to the CSV file when prompted.
 Test the dataset visualization app:
 
 ```
-streamlit run streamlit_app_db.py
+streamlit run dataset_viewer_app.py
 ```
 
-## Deployment
+## Deployment (optional)
 
 POPPY apps can be deployed on platforms like Streamlit Cloud for easy sharing and accessibility.
 
@@ -148,75 +163,4 @@ POPPY apps can be deployed on platforms like Streamlit Cloud for easy sharing an
 3. **Finalize Deployment**:
    - Assign a custom URL to the app.
    - Share the URL with collaborators or include it in publications and presentations.
-
-## Best Practices
-
-### Code Quality
-
-- Use tools like `pylint` or `flake8` to ensure clean and maintainable code.
-
-- Example:
-
-  ```
-  pylint create.py
-  ```
-
-### Testing
-
-- Test all scripts with a variety of sample datasets and file formats to identify bugs or compatibility issues.
-- Automate testing with `pytest`.
-
-### Error Handling
-
-- Add robust error-handling mechanisms to manage missing files or unsupported formats gracefully.
-
-### Documentation
-
-- Provide detailed comments in all scripts.
-- Maintain an updated `README.md` file in your GitHub repository with clear instructions and examples.
-
-## Example Applications
-
-### Visualizing Gaussian Output Files
-
-This app showcases computed molecular structures, allowing users to:
-
-- Select output files from a dropdown menu.
-- Visualize 3D structures in various styles (e.g., stick, ball-and-stick).
-
-### Molecular Orbital Viewer
-
-Interactive visualization of molecular orbitals with adjustable opacity sliders for better analysis of electron density distributions.
-
-### Dataset Explorer
-
-Query and filter molecular datasets interactively based on user-defined parameters (e.g., property thresholds).
-
-## Troubleshooting
-
-### Common Issues
-
-1. **App crashes on deployment**:
-   - Ensure all dependencies are correctly listed in `requirements.txt`.
-   - Check compatibility of Python libraries.
-2. **Cube files not rendering**:
-   - Confirm that cube files are properly formatted.
-   - Ensure the `py3Dmol` library is correctly installed.
-3. **Dataset app not loading CSV**:
-   - Check that the CSV file follows the expected structure.
-   - Validate data integrity to avoid parsing errors.
-
-## Frequently Asked Questions (FAQ)
-
-### Q1: Can POPPY handle non-Gaussian output files?
-
-Yes. POPPY relies on Open Babel for file format conversion and can be extended to support various computational chemistry outputs.
-
-### Q2: How do I customize the app layout?
-
-Modify the `stream_app.py` script. Streamlit’s Markdown and widgets allow easy customization of titles, colors, and layouts.
-
-### Q3: Can I integrate machine learning models with POPPY?
-
-Yes. POPPY supports Python libraries like `scikit-learn` and `joblib` for training and deploying ML models within the app.
 
