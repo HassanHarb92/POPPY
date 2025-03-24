@@ -1,0 +1,12 @@
+Names,SMILES,number of heavy atoms,number of hydrogen bond acceptor,number of hydrogen bond donors,ionization energy (random number)
+Methane,C,1,0,0,12.3
+Ethanol,CCO,3,1,1,15.1
+Acetic acid,CC(=O)O,4,1,1,9.2
+Benzene,c1ccccc1,6,0,0,23.1
+Caffeine,CN1C=NC2=C1C(=O)N(C(=O)N2C)C,14,6,0,1.3
+Aspirin,CC(=O)OC1=CC=CC=C1C(=O)O,13,3,1,13.2
+Nicotine,CN1CCC[C@H]1c2cccnc2,12,2,0,0.4
+Penicillin,CC1(C(N2C(S1)C(C2=O)NC(=O)CC3=CC=CC=C3)C(=O)O)C,23,4,2,12.1
+Serotinine,C1=CC2=C(C=C1O)C(=CN2)CCN,13,2,3,13.1
+Dopamine,C1=CC(=C(C=C1CCN)O)O,11,3,3,77.3
+Oxytocin,CC[C@H](C)[C@H]1C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@@H](CSSC[C@@H](C(=O)N[C@H](C(=O)N1)CC2=CC=C(C=C2)O)N)C(=O)N3CCC[C@H]3C(=O)N[C@@H](CC(C)C)C(=O)NCC(=O)N)CC(=O)N)CCC(=O)N ,69,15,12,12.1
